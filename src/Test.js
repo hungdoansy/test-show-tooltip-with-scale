@@ -3,6 +3,8 @@ import styled from "styled-components";
 
 const defaultObject = {};
 
+const scale = 0.5;
+
 const Test = ({ className }) => {
   const wrapperRef = useRef(null);
   const child0Ref = useRef(null);
@@ -11,7 +13,7 @@ const Test = ({ className }) => {
   const child3Ref = useRef(null);
 
   const [which, setWhich] = useState(0);
-  const [position, setPosition] = useState(defaultObject);
+  const [position, setPosition] = useState({ top: 100, left: 200 });
 
   const refs = [child0Ref, child1Ref, child2Ref, child3Ref];
 
@@ -23,6 +25,9 @@ const Test = ({ className }) => {
     const childBoundary = selectedRef.current.getBoundingClientRect();
     const wrapperBoundary = wrapperRef.current.getBoundingClientRect();
 
+    console.log({ childBoundary });
+    console.log({ wrapperBoundary });
+
     const toTop = childBoundary.top - wrapperBoundary.top;
     const toBottom = wrapperBoundary.bottom - childBoundary.bottom;
     const toLeft = childBoundary.left - wrapperBoundary.left;
@@ -31,15 +36,15 @@ const Test = ({ className }) => {
     const pos = {};
 
     if (toTop > toBottom) {
-      pos.bottom = wrapperBoundary.bottom - childBoundary.top;
+      pos.bottom = (wrapperBoundary.bottom - childBoundary.top) / scale;
     } else {
-      pos.top = childBoundary.bottom - wrapperBoundary.top;
+      pos.top = (childBoundary.bottom - wrapperBoundary.top) / scale;
     }
 
     if (toLeft > toRight) {
-      pos.right = wrapperBoundary.right - childBoundary.left;
+      pos.right = (wrapperBoundary.right - childBoundary.left) / scale;
     } else {
-      pos.left = childBoundary.right - wrapperBoundary.left;
+      pos.left = (childBoundary.right - wrapperBoundary.left) / scale;
     }
 
     setPosition(pos);
@@ -57,7 +62,9 @@ const Test = ({ className }) => {
           left: 15
         }}
         onClick={() => handleClick(0)}
-      ></div>
+      >
+        0
+      </div>
 
       <div
         className="child"
@@ -69,7 +76,9 @@ const Test = ({ className }) => {
           left: 600
         }}
         onClick={() => handleClick(1)}
-      ></div>
+      >
+        1
+      </div>
 
       <div
         className="child"
@@ -81,7 +90,9 @@ const Test = ({ className }) => {
           left: 600
         }}
         onClick={() => handleClick(2)}
-      ></div>
+      >
+        2
+      </div>
 
       <div
         className="child"
@@ -93,7 +104,9 @@ const Test = ({ className }) => {
           left: 110
         }}
         onClick={() => handleClick(3)}
-      ></div>
+      >
+        3
+      </div>
 
       <div
         className="child"
@@ -108,9 +121,9 @@ const Test = ({ className }) => {
 };
 
 export default styled(Test)`
-  transform: scale(0.5);
+  transform: scale(${scale});
 
-  margin: 10px 15px 20px 25px;
+  /* margin: 10px 15px 20px 25px; */
   width: 800px;
   height: 500px;
 
@@ -123,5 +136,7 @@ export default styled(Test)`
     position: absolute;
     background-color: maroon;
     border: 1px solid black;
+    color: white;
+    font-size: 16px;
   }
 `;
